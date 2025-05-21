@@ -1,18 +1,21 @@
 "use client";
 import DropDown from "@/reusableComponents/DropDown";
 import { Contact, SearchIcon, ShoppingCart, UserRound } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 function NavigationBar() {
-  const [showDropdown, setShowDropdown] = useState(false);
-
+  const router = useRouter();
+  const handleClickLogo = () => {
+    router.push("/");
+  };
   return (
     <div className="px-4 py-3 2xl:px-16 xl:py-4">
       <div className="flex items-center justify-between gap-2 border-b-[#3643BA]  ">
         <div className=" flex items-center w-[25%]  text-xl p-2">
           <div className="text-centre w-1/2 cursor-pointer">All Sports</div>
-          <div className="text-center w-1/2 text-[#3643BA] font-bold">
-            JUSTSHOP
+          <div className="text-center w-1/2 text-[#3643BA] font-bold cursor-pointer">
+            <p onClick={handleClickLogo}>JUSTSHOP</p>
           </div>
         </div>
         <div className="w-[50%] flex items-center justify-center border bg-gray-100 rounded-full px-2 hover:cursor-pointer">

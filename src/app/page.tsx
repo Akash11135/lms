@@ -1,9 +1,11 @@
 import ProductHome from "@/components/ProductHome";
+import { db } from "@/lib/db";
 
 import { CarouselDemo } from "@/reusableComponents/Carousel";
 import React from "react";
 
 function page() {
+  // console.log(db);
   return (
     <div className=" w-full">
       <div className="text-center">
