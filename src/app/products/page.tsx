@@ -1,7 +1,26 @@
+"use client";
+import { Product } from "@/lib/validators/products";
 import { Star, Heart } from "lucide-react";
-import React from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const ProductDetailPage = () => {
+  const searchParams = useSearchParams();
+  const productId = searchParams.get("productId");
+  const [product, setProduct] = useState<Product>();
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const response = await fetch(`/api/products?productId=${productId}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch product");
+      }
+      const data = await response.json();
+      setProduct(data);
+    };
+
+    fetchProduct();
+  }, [productId]);
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       {/* Product Top Section */}
@@ -9,7 +28,7 @@ const ProductDetailPage = () => {
         {/* Image */}
         <div className="w-full border rounded-lg p-4">
           <img
-            src="https://contents.mediadecathlon.com/p1587979/7813db01883c118aebbc2d12db109eef/p1587979.jpg?format=auto&quality=70&f=768x0"
+            src={product?.imageUrl}
             alt="product"
             className="w-full h-full object-contain"
           />
@@ -18,10 +37,10 @@ const ProductDetailPage = () => {
         {/* Details */}
         <div className="flex flex-col justify-between space-y-6">
           <div>
-            <h2 className="text-2xl font-bold">QUECHUA MH100 Hiking Shoes</h2>
+            <h2 className="text-2xl font-bold">{product?.name}</h2>
             <p className="text-sm text-gray-500 mt-1">by DecaShop</p>
             <div className="flex items-center gap-1 mt-2">
-              {Array(5)
+              {Array(product?.ratings ? product.ratings : 5)
                 .fill(0)
                 .map((_, i) => (
                   <Star
@@ -30,9 +49,13 @@ const ProductDetailPage = () => {
                     className="text-yellow-400 fill-yellow-400"
                   />
                 ))}
-              <span className="ml-2 text-sm text-gray-600">(120 reviews)</span>
+              <span className="ml-2 text-sm text-gray-600">
+                ({product?.ratings})
+              </span>
             </div>
-            <p className="mt-4 text-xl font-bold text-primary">₹3,299</p>
+            <p className="mt-4 text-xl font-bold text-primary">
+              ₹{product?.description}
+            </p>
           </div>
 
           {/* Size Selector */}

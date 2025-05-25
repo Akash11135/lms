@@ -2,10 +2,11 @@
 import { CircleX, Loader, LoaderCircle } from "lucide-react";
 import ProductCard from "./ProductCard";
 import { useProducts } from "@/hooks/getProducts";
-import { SideBySideCarousel } from "@/reusableComponents/sideBySideCarousel";
+import { useSearch } from "@/context/SearchContext";
 
 const ProductHome = () => {
   const { products, loading, error } = useProducts();
+  const { searchQuery } = useSearch();
 
   if (loading)
     return (
@@ -24,13 +25,21 @@ const ProductHome = () => {
   return (
     <>
       <div className="flex justify-center items-center flex-wrap w-full gap-4 p-5">
-        {products
-          ?.map((product) => <ProductCard key={product.id} product={product} />)
-          .slice(0, 15)}
-      </div>
-      <div className="w-full border border-red-500 flex flex-col items-center justify-center p-5">
-        <p>New range of men's wear</p>
-        {/* <SideBySideCarousel products={products} /> */}
+        <>
+          {(products ?? []).filter(
+            (
+              product //concept :- here in first case i wnat to return a length of products filtered, to use the length function to pront no items message, hence use closed parenthesis to return an array.
+            ) => product.name.toLowerCase().includes(searchQuery.toLowerCase())
+          ).length === 0 &&
+            searchQuery.length !== 0 && <p>Sorry no items found.</p>}
+        </>
+        {(products ?? []) //to handle the case when products is undefined
+          .filter((product) =>
+            product.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
       </div>
     </>
   );

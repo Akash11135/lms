@@ -13,7 +13,7 @@ import {
 
 export function CarouselDemo() {
   const plugin = React.useRef(
-    Autoplay({ delay: 1500, stopOnInteraction: true })
+    Autoplay({ delay: 1300, stopOnInteraction: true })
   );
 
   return (

@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
 
 type DropDownItems = {
   label: string;
@@ -28,7 +29,7 @@ function DropDown({ label, items, trigger }: DropDownProps) {
 
   const handleClick = (item: DropDownItems) => {
     if (item.onClick) item.onClick();
-    if (item.href) router.push(item.href);
+    if (item.href && item.label !== "logout") router.push(item.href);
   };
 
   return (
@@ -39,7 +40,12 @@ function DropDown({ label, items, trigger }: DropDownProps) {
         <DropdownMenuSeparator />
         {items?.map((item, index) => (
           <DropdownMenuItem key={index} onClick={() => handleClick(item)}>
-            {item.label}
+            {/* {item.label} */}
+            {item.label === "logout" ? (
+              <LogoutLink>{item.label}</LogoutLink>
+            ) : (
+              item.label
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
