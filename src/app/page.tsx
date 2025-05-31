@@ -1,14 +1,13 @@
 "use client";
 import ProductHome from "@/components/ProductHome";
 import { useSearch } from "@/context/SearchContext";
-import { User } from "@/lib/validators/users";
 import { CarouselDemo } from "@/reusableComponents/Carousel";
 
 function page() {
   const { searchQuery } = useSearch();
 
   return (
-    <div className=" w-full">
+    <div className="w-full">
       <div className="text-center">
         <h1 className="text-4xl font-bold">Discover new items.</h1>
       </div>

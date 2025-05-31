@@ -1,12 +1,13 @@
 // db/schema.ts
 import {
-  pgTable,
-  uuid,
-  varchar,
+  integer,
   numeric,
+  pgTable,
+  serial,
   text,
   timestamp,
-  integer,
+  uuid,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 export const categories = pgTable("categories", {
@@ -60,3 +61,12 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+export const contactUs = pgTable('contact_us', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 255 }).notNull(),
+  email: varchar('email', { length: 320 }).notNull(),
+  message: text('message').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
