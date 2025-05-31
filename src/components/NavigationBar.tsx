@@ -2,18 +2,11 @@
 
 import { useSearch } from "@/context/SearchContext";
 import DropDown from "@/reusableComponents/DropDown";
-import { KindeUser, LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
+import { KindeUser, LoginLink } from "@kinde-oss/kinde-auth-nextjs";
 
-import {
-  Contact,
-  Plus,
-  SearchIcon,
-  ShoppingCart,
-  UserRound,
-  X,
-} from "lucide-react";
+import { Contact, SearchIcon, ShoppingCart, UserRound } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 
 type props = {
   user: KindeUser<Record<string, any>> | null;
@@ -82,7 +75,10 @@ function NavigationBar({ user, isLoggedIn }: props) {
             <p className="text-sm">Cart</p>
           </div>
 
-          <div className="flex flex-col items-center cursor-pointer">
+          <div
+            onClick={() => router.push("/contact")}
+            className="flex flex-col items-center cursor-pointer"
+          >
             <div>
               <Contact size={20} />
             </div>
