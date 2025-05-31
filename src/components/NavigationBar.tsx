@@ -12,7 +12,7 @@ import {
   UserRound,
   X,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 type props = {
@@ -27,6 +27,8 @@ function NavigationBar({ user, isLoggedIn }: props) {
   const handleClickLogo = () => {
     router.push("/");
   };
+
+  const pathName = usePathname();
 
   const profileItems = [
     {
@@ -56,12 +58,19 @@ function NavigationBar({ user, isLoggedIn }: props) {
             {/* <NavigationDropdown /> */}
           </div>
         </div>
-        <div className="w-[50%] flex items-center justify-center border bg-gray-100 rounded-full px-2 hover:cursor-pointer">
+        <div
+          className={
+            pathName === "/categories"
+              ? "hidden"
+              : "w-[50%] flex items-center justify-center border bg-gray-100 rounded-full px-2 hover:cursor-pointer"
+          }
+        >
           <SearchIcon className="text-gray-500 " size={20} />
+
           <input
             type="text"
             placeholder="search"
-            className="w-full outline-none  p-2     "
+            className=" w-full outline-none  p-2"
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
@@ -85,7 +94,13 @@ function NavigationBar({ user, isLoggedIn }: props) {
               <div className="border rounded-full hover:bg-gray-100 border-gray-500">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full w-8 h-8 overflow-hidden">
-                    <img src={user?.picture || ""} alt="image" />
+                    <img
+                      src={
+                        user?.picture ||
+                        "https://www.apple.com/v/imac/u/images/overview/closer-look/colors_pf_yellow__fhckfv6xx8yi_large.jpg"
+                      }
+                      alt="image"
+                    />
                   </div>
                   <div className="text-sm mx-1 ">
                     <DropDown

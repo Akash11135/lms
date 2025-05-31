@@ -8,6 +8,9 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { KindeClientProvider } from "@/providers/KindeClientProvider";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { SearchContextProvider } from "@/context/SearchContext";
+import { db } from "@/lib/db";
+import { users } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 const roboto = Roboto_Condensed({
   subsets: ["latin"],
@@ -28,15 +31,43 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { getUser, isAuthenticated } = getKindeServerSession();
-  const user = await getUser(); // type: KindeUser | null
-  const isLoggedIn = await isAuthenticated(); // type: boolean
+  const user = await getUser();
+  const loggedIn = await isAuthenticated();
+  try {
+    if (loggedIn && user?.email) {
+      console.log("Authenticated user:", user.email);
+
+      const existing = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, user.email));
+
+      if (existing.length === 0) {
+        await db.insert(users).values({
+          id: user.id,
+          email: user.email,
+          name: user.given_name,
+          picture: user.picture,
+          phone: user.phone_number,
+          familyName: user.family_name,
+          address: "Default address",
+        });
+
+        console.log("User created in DB");
+      } else {
+        console.log("User already exists");
+      }
+    }
+  } catch (err) {
+    console.error("Error creating user:", err);
+  }
 
   return (
     <html lang="en" className={roboto.variable}>
       <body>
         <div className="flex flex-col min-h-screen">
           <SearchContextProvider>
-            <NavigationBar user={user} isLoggedIn={isLoggedIn} />
+            <NavigationBar user={user} isLoggedIn={loggedIn} />
             <SidebarProvider>
               <AppSidebar />
               <main className="flex grow">

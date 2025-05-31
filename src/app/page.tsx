@@ -1,11 +1,12 @@
 "use client";
 import ProductHome from "@/components/ProductHome";
 import { useSearch } from "@/context/SearchContext";
-
+import { User } from "@/lib/validators/users";
 import { CarouselDemo } from "@/reusableComponents/Carousel";
 
 function page() {
   const { searchQuery } = useSearch();
+
   return (
     <div className=" w-full">
       <div className="text-center">
