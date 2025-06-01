@@ -8,6 +8,7 @@ export async function GET(
 ) {
   try {
     const product = await getSpecificProduct({ productId: params.productId });
+
     return Response.json(product);
   } catch (err) {
     return new Response("Product not found", { status: 404 });

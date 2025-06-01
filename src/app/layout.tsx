@@ -35,8 +35,6 @@ export default async function RootLayout({
   const loggedIn = await isAuthenticated();
   try {
     if (loggedIn && user?.email) {
-      console.log("Authenticated user:", user.email);
-
       const existing = await db
         .select()
         .from(users)
@@ -52,8 +50,6 @@ export default async function RootLayout({
           familyName: user.family_name,
           address: "Default address",
         });
-
-        console.log("User created in DB");
       } else {
         console.log("User already exists");
       }

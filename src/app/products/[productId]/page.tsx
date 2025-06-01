@@ -1,13 +1,21 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { productDetail } from "@/lib/validators/productDetail";
 import { Product } from "@/lib/validators/products";
 import { Star, Heart, Divide, LoaderCircle } from "lucide-react";
+import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
-  const [product, setProduct] = useState<Product>();
+  const [product, setProduct] = useState<productDetail>();
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [productColor, setProductColor] = useState<string>("");
+  const [productSize, setProductSize] = useState<string>("");
+
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
@@ -19,7 +27,7 @@ const ProductDetailPage = () => {
         }
         const data = await response.json();
 
-        setProduct(data[0]);
+        setProduct(data);
       } catch (error) {
         console.log("error in fetching single product : ", error);
       } finally {
@@ -38,129 +46,87 @@ const ProductDetailPage = () => {
       </div>
     );
   }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("handeled.", productColor, productSize);
+  };
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
+    <div className="w-full min-h-screen mx-auto">
       {product && (
-        <div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {/* Image */}
-            <div className="w-full border rounded-lg p-4">
+        <div className="w-[80%] border flex flex-col">
+          <div className="productDetailsPage flex">
+            <div className="w-[30%] p-4 border">
               <img
-                src={product?.imageUrl}
-                alt="product"
-                className="w-full h-full object-contain"
+                src={product?.imageUrl || "/placeholder.png"}
+                alt="Product Image"
+                className="w-full h-full object-cover"
               />
             </div>
+            <div className="w-[70%] p-4 border">
+              <h1 className="text-2xl font-bold">{product.name}</h1>
+              <p className="text-gray-600 mt-2">{product.description}</p>
 
-            {/* Details */}
-            <div className="flex flex-col justify-between space-y-6">
-              <div>
-                <h2 className="text-2xl font-bold">{product?.name}</h2>
-                <p className="text-sm text-gray-500 mt-1">by DecaShop</p>
-                <div className="flex items-center gap-1 mt-2">
-                  {/* {Array(product?.ratings ? product.ratings : 5)
-                    .fill(0)
-                    .map((_, i) => (
-                      <Star
-                        key={i}
-                        size={18}
-                        className="text-yellow-400 fill-yellow-400"
-                      />
-                    ))} */}
-                  <span className="ml-2 text-sm text-gray-600">
-                    ({product?.ratings})
-                  </span>
+              <div className="flex  mt-4 flex-col">
+                <span className="text-lg font-semibold ">
+                  Price: ${product.price}
+                </span>
+
+                <div className="flex items-center justify-center border w-fit p-2 mt-5 ">
+                  <Star className="w-5 h-5 text-yellow-500 mr-1" />
+                  {product.ratings} | 1k+ Reviews
                 </div>
-                <p className="mt-4 text-xl font-bold text-primary">
-                  ₹{product?.price}
-                </p>
-              </div>
 
-              {/* Size Selector */}
-              <div>
-                <h4 className="font-semibold mb-2">Select Size:</h4>
-                <div className="flex gap-3">
-                  {["UK 6", "UK 7", "UK 8", "UK 9"].map((size) => (
-                    <button
-                      key={size}
-                      className="border px-4 py-1 rounded hover:bg-primary hover:text-white transition"
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex gap-4 mt-4">
-                <button className="bg-primary text-white px-6 py-2 rounded hover:opacity-90">
-                  Add to Cart
-                </button>
-                <button className="border border-primary text-primary px-6 py-2 rounded flex items-center gap-2 hover:bg-primary hover:text-white transition">
-                  <Heart size={16} /> Wishlist
-                </button>
-              </div>
-
-              {/* Description */}
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold mb-2">
-                  Product Description
-                </h3>
-                <p className="text-sm text-gray-700">{product.description}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-12">
-            <h3 className="text-xl font-semibold mb-4">Highlights</h3>
-            <ul className="list-disc list-inside space-y-2 text-sm text-gray-700">
-              <li>Water-resistant upper mesh</li>
-              <li>Non-slip rubber outsole</li>
-              <li>Comfort padding & ankle support</li>
-              <li>Ideal for mountain & trail hikes</li>
-            </ul>
-          </div>
-
-          <div className="mt-14">
-            <h3 className="text-xl font-semibold mb-6">Customer Reviews</h3>
-
-            {/* Single Review Example */}
-            <div className="border-t pt-6 space-y-6">
-              {[1, 2].map((_, index) => (
-                <div key={index} className="border-b pb-4">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-bold">John Doe</h4>
-                    <div className="flex">
-                      {[...Array(4)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={16}
-                          className="text-yellow-400 fill-yellow-400"
+                <form action="" onSubmit={handleSubmit}>
+                  <div className="mt-3">
+                    <label className="font-bold text-xl">COLOR OPTIONS:</label>
+                    <div className="flex gap-2 w-fit p-2 mt-3">
+                      {product?.properties?.color.map((color, index) => (
+                        <div
+                          key={index}
+                          className={`w-5 h-5 rounded-full border border-black cursor-pointer transition ${
+                            productColor === color
+                              ? "ring-2 ring-offset-2 ring-black scale 110"
+                              : "border-black"
+                          }`}
+                          style={{ backgroundColor: color }}
+                          onClick={() => setProductColor(color)}
                         />
                       ))}
-                      <Star size={16} className="text-gray-300" />
                     </div>
                   </div>
-                  <p className="text-sm text-gray-700 mt-2">
-                    Great hiking shoes for the price. Comfortable, breathable,
-                    and have good grip.
-                  </p>
+                  <div className="mt-3">
+                    <label className="font-bold text-xl">SELECT SIZE:</label>
+                    <div className="flex gap-2 w-fit p-2 mt-3">
+                      {product?.properties?.size.map((size) => (
+                        <div
+                          key={size}
+                          className={` border w-fit p-2 border-gray-300 cursor-pointer transition ${
+                            productSize === size
+                              ? "bg-black text-white"
+                              : "bg-white text-black"
+                          }`}
+                          onClick={() => setProductSize(size)}
+                        >
+                          {size}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 mt-5">
+                    <Button type="submit" className="w-fit">
+                      ADD TO CART
+                    </Button>
+                    <Button className="w-fit">ADD TO WISHLIST</Button>
+                  </div>
+                </form>
+                <div className="font-semibold text-lg mt-5">
+                  Dilevery and address details
                 </div>
-              ))}
-            </div>
-
-            {/* Leave a Review */}
-            <div className="mt-10">
-              <h4 className="font-semibold mb-2">Write a Review</h4>
-              <textarea
-                placeholder="Share your experience..."
-                className="w-full border p-3 rounded min-h-[100px]"
-              />
-              <button className="mt-4 bg-primary text-white px-6 py-2 rounded hover:opacity-90">
-                Submit Review
-              </button>
+              </div>
             </div>
           </div>
+          <div className="reviwes">reviews</div>
         </div>
       )}
     </div>

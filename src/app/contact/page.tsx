@@ -1,7 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { CarouselDemo } from "@/reusableComponents/Carousel";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { z } from "zod";
 
@@ -78,73 +80,75 @@ const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 rounded-md h-100 mt-10 shadow-xl w-120 border border-black">
-      <h1 className="text-2xl font-bold mb-4">Contact Us</h1>
-      <form onSubmit={handleSubmit} noValidate>
-        <div className="mb-4">
-          <Input
-            id="name"
-            placeholder="Name"
-            name="name"
-            type="text"
-            value={formData.name}
-            onChange={handleChange}
-            className={`w-full border rounded px-3 py-2 ${
-              fieldErrors.name ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {fieldErrors.name && (
-            <p className="text-red-600 text-sm mt-1">{fieldErrors.name}</p>
+    <div className="w-full items-center mt-[10rem]">
+      <div className="max-w-md mx-auto p-6 rounded-md h-100 mt-10 shadow-xl w-120 border border-black">
+        <h1 className="text-2xl font-bold mb-4">Contact Us</h1>
+        <form onSubmit={handleSubmit} noValidate>
+          <div className="mb-4">
+            <Input
+              id="name"
+              placeholder="Name"
+              name="name"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+              className={`w-full border rounded px-3 py-2 ${
+                fieldErrors.name ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {fieldErrors.name && (
+              <p className="text-red-600 text-sm mt-1">{fieldErrors.name}</p>
+            )}
+          </div>
+
+          {/* Email Field */}
+          <div className="mb-4">
+            <Input
+              id="email"
+              placeholder="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`w-full border rounded px-3 py-2 ${
+                fieldErrors.email ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {fieldErrors.email && (
+              <p className="text-red-600 text-sm mt-1">{fieldErrors.email}</p>
+            )}
+          </div>
+
+          {/* Message Field */}
+          <div className="mb-4">
+            <Textarea
+              id="message"
+              placeholder="Type your message here..."
+              name="message"
+              rows={4}
+              value={formData.message}
+              onChange={handleChange}
+              className={`w-full border rounded px-3 py-2 ${
+                fieldErrors.message ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {fieldErrors.message && (
+              <p className="text-red-600 text-sm mt-1">{fieldErrors.message}</p>
+            )}
+          </div>
+
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Sending..." : "Send Message"}
+          </Button>
+
+          {submitSuccess && (
+            <p className="text-green-600 text-center mt-4">{submitSuccess}</p>
           )}
-        </div>
-
-        {/* Email Field */}
-        <div className="mb-4">
-          <Input
-            id="email"
-            placeholder="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={`w-full border rounded px-3 py-2 ${
-              fieldErrors.email ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {fieldErrors.email && (
-            <p className="text-red-600 text-sm mt-1">{fieldErrors.email}</p>
+          {submitError && (
+            <p className="text-red-600 text-center mt-4">{submitError}</p>
           )}
-        </div>
-
-        {/* Message Field */}
-        <div className="mb-4">
-          <Textarea
-            id="message"
-            placeholder="Type your message here..."
-            name="message"
-            rows={4}
-            value={formData.message}
-            onChange={handleChange}
-            className={`w-full border rounded px-3 py-2 ${
-              fieldErrors.message ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {fieldErrors.message && (
-            <p className="text-red-600 text-sm mt-1">{fieldErrors.message}</p>
-          )}
-        </div>
-
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Sending..." : "Send Message"}
-        </Button>
-
-        {submitSuccess && (
-          <p className="text-green-600 text-center mt-4">{submitSuccess}</p>
-        )}
-        {submitError && (
-          <p className="text-red-600 text-center mt-4">{submitError}</p>
-        )}
-      </form>
+        </form>
+      </div>
     </div>
   );
 };
