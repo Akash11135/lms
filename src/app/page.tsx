@@ -2,7 +2,7 @@
 import ProductHome from "@/components/ProductHome";
 import { useSearch } from "@/context/SearchContext";
 import { CarouselDemo } from "@/reusableComponents/Carousel";
-
+import { motion } from "framer-motion";
 function page() {
   const { searchQuery } = useSearch();
 
@@ -20,7 +20,15 @@ function page() {
           </h2>
         )}
       </div>
-      <ProductHome />
+
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true }}
+      >
+        <ProductHome />
+      </motion.div>
     </div>
   );
 }

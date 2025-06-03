@@ -4,6 +4,7 @@ import { Heart, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { Button } from "./ui/button";
+import { motion } from "framer-motion";
 
 type ProductCardProps = {
   product: Product;
@@ -17,19 +18,26 @@ const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <div
-      className="w-full sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%] min-w-[160px] max-w-[240px] flex flex-col border shadow-sm  overflow-hidden bg-white cursor-pointer hover:shadow-md transition"
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      className="w-full sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%] min-w-[160px] max-w-[240px] flex flex-col border shadow-sm overflow-hidden bg-white cursor-pointer hover:shadow-md transition"
       onClick={handleClick}
     >
       {/* Image Section */}
-      <div className="relative aspect-[3/4] bg-gray-100">
-        <img
+      <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden">
+        <motion.img
           src={
             product.imageUrl ||
             "https://contents.mediadecathlon.com/p1587979/7813db01883c118aebbc2d12db109eef/p1587979.jpg?format=auto&quality=70&f=256x0"
           }
           alt={product.name}
           className="object-cover w-full h-full"
+          whileHover={{ scale: 1.25 }}
+          transition={{ duration: 0.4 }}
         />
         <div className="absolute bottom-2 left-2 right-2 flex justify-between items-center bg-white/80 px-2 py-1 rounded">
           <span className="flex items-center gap-1 text-xs text-gray-700">
@@ -61,7 +69,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

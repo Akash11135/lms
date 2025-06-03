@@ -8,7 +8,7 @@ import { CarouselDemo } from "@/reusableComponents/Carousel";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
-
+import HorizontalSlider from "@/reusableComponents/HorizontalSlider";
 const ProductHome = () => {
   const { products, loading, error } = useProducts();
   const { searchQuery } = useSearch();
@@ -33,29 +33,31 @@ const ProductHome = () => {
 
   return (
     <>
-      <div className="flex justify-center  flex-wrap w-full gap-4 ">
-        <h1 className="text-2xl text-start font-bold  w-full">
-          Try wide range of latest brands and products
-        </h1>
-        <div className="flex flex-wrap gap-7 p-2 items-center justify-center">
-          <>
-            {(products ?? []).filter(
-              (
-                product //concept :- here in first case i wnat to return a length of products filtered, to use the length function to pront no items message, hence use closed parenthesis to return an array.
-              ) =>
+      <div className="flex , flex-col gap-2 items-center">
+        <div className="flex justify-center  flex-wrap w-full gap-4 ">
+          <h1 className="text-2xl text-start font-bold  w-full mt-5">
+            Try wide range of latest brands and products
+          </h1>
+          <div className="flex flex-wrap gap-7 p-2 items-center justify-center">
+            <>
+              {(products ?? []).filter(
+                (
+                  product //concept :- here in first case i wnat to return a length of products filtered, to use the length function to pront no items message, hence use closed parenthesis to return an array.
+                ) =>
+                  product.name.toLowerCase().includes(searchQuery.toLowerCase())
+              ).length === 0 &&
+                searchQuery.length !== 0 && <p>Sorry no items found.</p>}
+            </>
+            {(products ?? []) //to handle the case when products is undefined
+              .filter((product) =>
                 product.name.toLowerCase().includes(searchQuery.toLowerCase())
-            ).length === 0 &&
-              searchQuery.length !== 0 && <p>Sorry no items found.</p>}
-          </>
-          {(products ?? []) //to handle the case when products is undefined
-            .filter((product) =>
-              product.name.toLowerCase().includes(searchQuery.toLowerCase())
-            )
-            .map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+              )
+              .map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+          </div>
         </div>
-        <div>
+        <div className="w-full">
           <h1 className="text-2xl font-bold text-center m-2">
             Explore More of latest fashion.{" "}
           </h1>
@@ -70,6 +72,18 @@ const ProductHome = () => {
           </p>
           <Input placeholder="email" className="m-3 w-1/2" />
           <Button type="button">Send</Button>
+        </div>
+        <div className="mt-5">
+          {products && (
+            <div>
+              <HorizontalSlider
+                products={products.filter((product) =>
+                  product.name.toLowerCase().includes(searchQuery.toLowerCase())
+                )}
+                title="Latest Trends"
+              />
+            </div>
+          )}
         </div>
       </div>
     </>

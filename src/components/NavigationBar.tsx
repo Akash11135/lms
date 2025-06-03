@@ -4,7 +4,13 @@ import { useSearch } from "@/context/SearchContext";
 import DropDown from "@/reusableComponents/DropDown";
 import { KindeUser, LoginLink } from "@kinde-oss/kinde-auth-nextjs";
 
-import { Contact, SearchIcon, ShoppingCart, UserRound } from "lucide-react";
+import {
+  CirclePercentIcon,
+  Contact,
+  SearchIcon,
+  ShoppingCart,
+  UserRound,
+} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -21,6 +27,9 @@ function NavigationBar({ user, isLoggedIn }: props) {
     router.push("/");
   };
 
+  const handleClickCart = () => {
+    router.push("/cart");
+  };
   const pathName = usePathname();
 
   const profileItems = [
@@ -46,7 +55,8 @@ function NavigationBar({ user, isLoggedIn }: props) {
           >
             All Sports
           </div>
-          <div className="text-center w-1/2 text-[#3643BA] font-bold cursor-pointer">
+          <div className="text-center p-1  border-black rounded-md bg-black text-white font-bold cursor-pointer border flex items-center gap-3">
+            <CirclePercentIcon />
             <p onClick={handleClickLogo}>JUSTSHOP</p>
             {/* <NavigationDropdown /> */}
           </div>
@@ -68,7 +78,10 @@ function NavigationBar({ user, isLoggedIn }: props) {
           />
         </div>
         <div className="flex justify-evenly gap-3  w-[25%] items-center">
-          <div className="flex flex-col items-center cursor-pointer">
+          <div
+            className="flex flex-col items-center cursor-pointer"
+            onClick={handleClickCart}
+          >
             <div>
               <ShoppingCart size={20} />
             </div>
@@ -102,7 +115,7 @@ function NavigationBar({ user, isLoggedIn }: props) {
                     <DropDown
                       label="Profile"
                       items={profileItems}
-                      trigger={<p>{user?.given_name}</p>}
+                      trigger={<p>👋, {user?.given_name}</p>}
                     />
                   </div>
                 </div>

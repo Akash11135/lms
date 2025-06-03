@@ -6,7 +6,8 @@ import { CarouselDemo } from "@/reusableComponents/Carousel";
 import { CircleX, LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+import { motion } from "framer-motion";
+import HorizontalSlider from "@/reusableComponents/HorizontalSlider";
 const CategoriesPage = () => {
   const { categories, loading, error } = useCategory();
   const router = useRouter();
@@ -47,9 +48,17 @@ const CategoriesPage = () => {
     <div className="flex flex-col p-2 items-center">
       <div className="w-full  flex justify-around flex-wrap gap-4 p-4">
         {categories?.map((category) => (
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 8px 15px rgba(0,0,0,0.1)",
+            }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
             key={category.id}
-            className=" p-4 mt-3 cursor-pointer hover:shadow-lg transition-shadow rounded"
+            className="card  gap-4 p-4 mt-3 cursor-pointer hover:shadow-lg transition-shadow rounded"
             onClick={() => router.push(`/categories/${category.id}`)}
           >
             <h1 className="text-2xl font-bold mb-4 text-center">
@@ -62,10 +71,13 @@ const CategoriesPage = () => {
                 className="w-48 h-48 object-cover rounded"
               />
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
-      <div>
+      <div className="w-full">
+        <h1 className="text-2xl font-bold m-3 text-center">
+          Discover new items.
+        </h1>
         <CarouselDemo />
       </div>
       <h1 className="text-2xl font-bold m-3 ">Explore more products.</h1>
@@ -73,6 +85,12 @@ const CategoriesPage = () => {
         {(products ?? [])
           .map((item) => <ProductCard key={item.id} product={item} />)
           .slice(0, 8)}
+      </div>
+      <div className="mt-10">
+        <HorizontalSlider
+          title="Trending Products"
+          products={(products ?? []).slice(0, 10)}
+        />
       </div>
     </div>
   );

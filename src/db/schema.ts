@@ -62,11 +62,25 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const contactUs = pgTable('contact_us', {
-  id: serial('id').primaryKey(),
-  name: varchar('name', { length: 255 }).notNull(),
-  email: varchar('email', { length: 320 }).notNull(),
-  message: text('message').notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+export const contactUs = pgTable("contact_us", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const cart = pgTable("cart", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: varchar("user_id")
+    .references(() => users.id)
+    .notNull(),
+  productId: uuid("product_id")
+    .references(() => products.id)
+    .notNull(),
+  quantity: integer("quantity").default(1).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  color: text("color"),
+  size: text("size"),
+});

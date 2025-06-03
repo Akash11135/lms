@@ -51,6 +51,15 @@ body {
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+  scroll-behavior: smooth;
+}
+/* Hide scrollbars - cross-browser */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 :root {
