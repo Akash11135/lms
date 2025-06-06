@@ -4,7 +4,6 @@ import NavigationBar from "@/components/NavigationBar";
 import { Roboto_Condensed } from "next/font/google";
 import Footer from "@/components/Footer";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import { KindeClientProvider } from "@/providers/KindeClientProvider";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { SearchContextProvider } from "@/context/SearchContext";
@@ -65,7 +64,6 @@ export default async function RootLayout({
           <SearchContextProvider>
             <NavigationBar user={user} isLoggedIn={loggedIn} />
             <SidebarProvider>
-              <AppSidebar />
               <main className="flex grow">
                 <SidebarTrigger />
                 <KindeClientProvider>{children}</KindeClientProvider>

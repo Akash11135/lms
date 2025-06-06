@@ -33,22 +33,24 @@ const ProductHome = () => {
 
   return (
     <>
-      <div className="flex , flex-col gap-2 items-center">
-        <div className="flex justify-center  flex-wrap w-full gap-4 ">
-          <h1 className="text-2xl text-start font-bold  w-full mt-5">
+      <div className="flex flex-col gap-2 items-center">
+        <div className="flex justify-center flex-wrap w-full gap-4 ">
+          <h1 className="text-2xl max-sm:text-base text-start font-bold w-full mt-5 max-sm:mt-2">
             Try wide range of latest brands and products
           </h1>
-          <div className="flex flex-wrap gap-7 p-2 items-center justify-center">
+
+          <div className="flex flex-wrap gap-7 p-2 items-center justify-center max-sm:gap-4">
             <>
-              {(products ?? []).filter(
-                (
-                  product //concept :- here in first case i wnat to return a length of products filtered, to use the length function to pront no items message, hence use closed parenthesis to return an array.
-                ) =>
-                  product.name.toLowerCase().includes(searchQuery.toLowerCase())
+              {(products ?? []).filter((product) =>
+                product.name.toLowerCase().includes(searchQuery.toLowerCase())
               ).length === 0 &&
-                searchQuery.length !== 0 && <p>Sorry no items found.</p>}
+                searchQuery.length !== 0 && (
+                  <p className="text-sm text-center text-gray-500 max-sm:text-xs">
+                    Sorry no items found.
+                  </p>
+                )}
             </>
-            {(products ?? []) //to handle the case when products is undefined
+            {(products ?? [])
               .filter((product) =>
                 product.name.toLowerCase().includes(searchQuery.toLowerCase())
               )
@@ -57,33 +59,36 @@ const ProductHome = () => {
               ))}
           </div>
         </div>
+
         <div className="w-full">
-          <h1 className="text-2xl font-bold text-center m-2">
-            Explore More of latest fashion.{" "}
+          <h1 className="text-2xl font-bold text-center m-2 max-sm:text-base">
+            Explore More of latest fashion.
           </h1>
           <div onClick={handleCarousel} className="cursor-pointer">
             <CarouselDemo />
           </div>
         </div>
-        <div className="flex flex-col border w-[75%] justify-between items-center p-3 m-3">
-          <p>Get our free guide for applying at JUSTSHOP.</p>
-          <p className="mt-2 text-sm text-gray-500">
-            (Enter yout email to get free broschure.)
+
+        <div className="flex flex-col border w-[75%] justify-between items-center p-3 m-3 max-sm:w-[90%] max-sm:p-2 max-sm:m-2">
+          <p className="text-base max-sm:text-sm text-center">
+            Get our free guide for applying at JUSTSHOP.
           </p>
-          <Input placeholder="email" className="m-3 w-1/2" />
-          <Button type="button">Send</Button>
+          <p className="mt-2 text-sm text-gray-500 max-sm:text-xs max-sm:mt-1 text-center">
+            (Enter your email to get free brochure.)
+          </p>
+          <Input
+            placeholder="email"
+            className="m-3 w-1/2 max-sm:w-full max-sm:m-2 max-sm:text-sm"
+          />
+          <Button type="button" className="max-sm:text-sm">
+            Send
+          </Button>
         </div>
-        <div className="mt-5">
-          {products && (
-            <div>
-              <HorizontalSlider
-                products={products.filter((product) =>
-                  product.name.toLowerCase().includes(searchQuery.toLowerCase())
-                )}
-                title="Latest Trends"
-              />
-            </div>
-          )}
+        <div className="max-sm:hidden">
+          <HorizontalSlider
+            title="LATEST TRENDS"
+            products={products?.slice(0, 10) || []}
+          />
         </div>
       </div>
     </>

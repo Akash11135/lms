@@ -1,7 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useProducts } from "@/hooks/getProducts";
+import { Cart } from "@/lib/validators/cart";
+import { LoaderCircle } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const dummyCartItems = [
   {
@@ -19,8 +23,49 @@ const dummyCartItems = [
   },
 ];
 
-const Cart = () => {
+const CartPage = () => {
   const [deliveryType, setDeliveryType] = useState<"home" | "store">("home");
+  const [cartItem, setCartItem] = useState<Cart[]>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const { products } = useProducts();
+  useEffect(() => {
+    try {
+      const fetchDetails = async () => {
+        setLoading(true);
+        const response = await fetch(`api/cart`);
+        if (!response.ok) {
+          console.log("error in fetching response from cart in cart page :: ");
+        }
+
+        const data = await response.json();
+        setCartItem(data);
+      };
+      fetchDetails();
+    } catch (error) {
+      console.log("error in fetching cart items :: ", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  let cartProducts;
+  if (cartItem && cartItem.length > 0 && products) {
+    cartProducts = cartItem.map((item) =>
+      products.find((product) => product.id === item.productId)
+    );
+  }
+
+  if (cartProducts && cartProducts.length > 0) {
+    console.log("products in cart :: ", cartProducts);
+  }
+  if (loading) {
+    return (
+      <div>
+        <LoaderCircle className="animate-spin " size={24} />
+        Loading cart products
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full p-2 flex flex-col item-centre">
@@ -77,7 +122,7 @@ const Cart = () => {
           {/* Cart Items */}
           <div className="border rounded-lg p-5 bg-white shadow-sm">
             <h2 className="text-lg font-semibold mb-4">Items in Cart</h2>
-            {dummyCartItems.map((item) => (
+            {cartProducts?.map((item) => (
               <div
                 key={item.id}
                 className="flex items-center justify-between border-b py-4"
@@ -85,15 +130,15 @@ const Cart = () => {
                 <div className="flex gap-4 items-start">
                   <input type="checkbox" checked className="mt-2" readOnly />
                   <img
-                    src={item.image}
+                    src={item?.imageUrl}
                     alt={item.name}
                     className="w-24 h-24 object-cover rounded"
                   />
                   <div>
-                    <p className="font-bold">{item.brand}</p>
+                    {/* <p className="font-bold">{item.brand}</p> */}
                     <p className="text-sm">{item.name}</p>
                     <p className="text-xs text-gray-500 mt-1">
-                      Ref: {item.ref}
+                      {/* Ref: {item.ref} */}
                     </p>
                     <div className="mt-1 text-sm flex gap-3">
                       <span>Size: {item.size}</span>
@@ -191,4 +236,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default CartPage;

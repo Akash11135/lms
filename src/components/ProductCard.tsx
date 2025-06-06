@@ -24,7 +24,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className="w-full sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%] min-w-[160px] max-w-[240px] flex flex-col border shadow-sm overflow-hidden bg-white cursor-pointer hover:shadow-md transition"
+      className="w-full sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%] min-w-[260px] max-w-[240px] flex flex-col border shadow-sm overflow-hidden bg-white cursor-pointer hover:shadow-md transition"
       onClick={handleClick}
     >
       {/* Image Section */}

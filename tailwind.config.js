@@ -5,11 +5,13 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
-  plugins: [require("tailwind-scrollbar-hide")],
   theme: {
     extend: {
       colors: {
         primary: "#3643BA",
+      },
+      borderWidth: {
+        1: "1px",
       },
     },
     screens: {
@@ -20,5 +22,5 @@ module.exports = {
       "2xl": "1536px",
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };

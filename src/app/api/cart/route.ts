@@ -1,5 +1,9 @@
+import { cart } from "@/db/schema";
+import { db } from "@/lib/db";
 import addToCart from "@/lib/db/queries/addToCart";
-import { NextRequest } from "next/server";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { eq } from "drizzle-orm";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest): Promise<Response> {
   const body = await req.json();
@@ -32,5 +36,30 @@ export async function POST(req: NextRequest): Promise<Response> {
         status: 500,
       }
     );
+  }
+}
+
+export async function GET() {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  const userId = user?.id;
+  try {
+    if (!userId) {
+      return new NextResponse(JSON.stringify({ error: "Not logged in" }), {
+        status: 401,
+      });
+    }
+
+    const result = await db.select().from(cart).where(eq(cart.userId, userId));
+
+    return NextResponse.json(result, { status: 200 });
+  } catch (error) {
+    console.error("Error in getting cart items:", error);
+    return new NextResponse(
+      JSON.stringify({ error: "Internal server error" }),
+      { status: 500 }
+    );
+  } finally {
+    console.log("route get executed.", userId);
   }
 }

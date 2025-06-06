@@ -11,7 +11,7 @@ import {
 const Footer = () => {
   return (
     <footer className="bg-primary text-white pt-10 px-6 md:px-20">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 pb-10 border-b border-white/20">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 pb-10 border-b border-white/20 max-sm:grid-cols-2 ">
         {/* Brand */}
         <div>
           <h2 className="text-2xl font-bold mb-4">DecaShop</h2>

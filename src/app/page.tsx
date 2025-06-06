@@ -1,4 +1,5 @@
 "use client";
+import { AppSidebar } from "@/components/app-sidebar";
 import ProductHome from "@/components/ProductHome";
 import { useSearch } from "@/context/SearchContext";
 import { CarouselDemo } from "@/reusableComponents/Carousel";
@@ -9,7 +10,10 @@ function page() {
   return (
     <div className="w-full">
       <div className="text-center">
-        <h1 className="text-4xl font-bold">Discover new items.</h1>
+        <h1 className="text-4xl font-bold max-sm:text-xl">
+          <AppSidebar />
+          Discover new items.
+        </h1>
       </div>
       <div className="">
         {searchQuery.length <= 0 ? (

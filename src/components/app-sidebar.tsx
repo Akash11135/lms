@@ -41,9 +41,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>
-            Filtering based on current page products
-          </SidebarGroupLabel>
+          <SidebarGroupLabel>Check Out</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

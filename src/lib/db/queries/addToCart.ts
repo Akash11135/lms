@@ -34,11 +34,13 @@ export default async function addToCart({ cartItem }: addToCartProps) {
       .select()
       .from(cart)
       .where(and(eq(cart.userId, userId), eq(cart.productId, productId)));
+    console.log("existing items :: ", existingItem);
     if (existingItem?.length > 0) {
       const updatedItem = await db
         .update(cart)
         .set({ quantity: quantity })
-        .where(and(eq(cart.id, id)));
+        .where(and(eq(cart.userId, userId), eq(cart.productId, productId)))
+        .returning();
       return { "updated item": updatedItem };
     }
 
